@@ -16,5 +16,8 @@ public interface SubEntityDomainRepository extends BaseRepository<SubEntityDomai
     @Query("SELECT sed.subEntityProductCategories FROM SubEntityDomain sed JOIN sed.subEntities se WHERE se.id = :subEntityId")
     List<SubEntityProductCategory> findCategoriesBySubEntityId(@Param("subEntityId") UUID subEntityId);
 
+    @Query("SELECT d FROM SubEntityDomain d WHERE d.name = :storeType")
+    List<SubEntityDomain> findDomainsByName(@Param("storeType") String storeType);
+
 
 }

@@ -76,7 +76,7 @@ public class Box extends AbstractEntity<UUID> implements IOfferChoice {
 
     private boolean isActive ;
 	
-	Box() {
+	public Box() {
 	}
 
 	public Box(BoxType type) {

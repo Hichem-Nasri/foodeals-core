@@ -5,6 +5,7 @@ import net.foodeals.core.domain.entities.ProductCategory;
 import net.foodeals.core.domain.entities.SubEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ProductRepository extends BaseRepository<Product, UUID> {
+public interface ProductRepository extends BaseRepository<Product, UUID>, JpaSpecificationExecutor<Product> {
 
     @Query("SELECT p FROM Product p WHERE p.barcode = ?1 AND p.deletedAt IS NULL")
     public Optional<Product> findByBarcode(String barcode);
@@ -63,4 +64,8 @@ public interface ProductRepository extends BaseRepository<Product, UUID> {
     WHERE d.offer.subEntity.id = :subEntityId
 """)
     List<Product> findProductsWithActiveOffers(UUID subEntityId);
+
+
+    @Query("SELECT p FROM Product p WHERE p.subEntity.id = :storeId AND LOWER(p.name) LIKE LOWER(CONCAT('%', :q, '%'))")
+    Page<Product> searchInStore(@Param("storeId") UUID storeId, @Param("q") String q, Pageable pageable);
 }

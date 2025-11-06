@@ -31,6 +31,7 @@ public class SubEntityDomain extends AbstractEntity<UUID> {
 
     private String description;
 
+
     private String photoUrl ;
 
     @OneToMany(mappedBy = "subEntityDomain", cascade = CascadeType.ALL)

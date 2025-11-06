@@ -24,7 +24,16 @@ public class ProductCategory extends AbstractEntity<UUID> {
 
 	private String name;
 
+    private String imagePath;
+
+
+    private String description;
+
 	private String slug;
+
+    private String icon;
+
+    private Integer orderNo;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Activity activity;
@@ -46,9 +55,24 @@ public class ProductCategory extends AbstractEntity<UUID> {
 		this.slug = slug;
 	}
 
-	public static ProductCategory create(UUID id, String name, String slug) {
+    public ProductCategory(UUID id, String name, String slug, String description,String imagePath,String icon,Integer orderNo) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.imagePath = imagePath;
+        this.icon = icon;
+        this.orderNo = orderNo;
+        this.slug = slug;
+    }
+
+	public static ProductCategory create(UUID id, String name,  String slug) {
 		return new ProductCategory(name, slug);
 	}
+
+    public static ProductCategory create(UUID id, String name,  String slug ,String description,
+                                         String imagePath,String icon,Integer orderNo) {
+        return new ProductCategory(id,name,slug,description,imagePath,icon,orderNo);
+    }
 
 	public static ProductCategory create(String name, String slug) {
 		return new ProductCategory(name, slug);

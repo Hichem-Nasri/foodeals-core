@@ -2,6 +2,7 @@ package net.foodeals.core.repositories;
 
 import net.foodeals.core.domain.entities.ProductCategory;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +18,11 @@ public interface ProductCategoryRepository extends BaseRepository<ProductCategor
 	
 	@Query("SELECT c FROM ProductCategory c WHERE c.slug = :slug AND c.deletedAt IS NULL")
     Optional<ProductCategory> findBySlug(String slug);
+
+    @Query("SELECT c.id as id, c.name as name, c.description as description, c.imagePath as image, COUNT(p) as itemsCount, c.icon as icon, c.orderNo as orderNo " +
+            "FROM ProductCategory c LEFT JOIN Product p ON p.category = c AND p.subEntity.id = :storeId " +
+            "GROUP BY c.id, c.name, c.description, c.imagePath, c.icon, c.orderNo ORDER BY c.orderNo ASC")
+    List<Object[]> findCategoriesWithCountsRaw(@Param("storeId") UUID storeId);
 
 
 
